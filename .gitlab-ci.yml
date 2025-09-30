@@ -1,5 +1,5 @@
 stages:
-  - build
+  - build_ci_image
   - deploy
 
 build_ci_image:
