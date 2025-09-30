@@ -12,6 +12,7 @@ build_ci_image:
     changes:
       - ci-image/**/*
       - justfile
+      - .gitlab-ci.yml
 
 deploy:
   stage: deploy
@@ -20,3 +21,4 @@ deploy:
   when: manual
   needs:
     - job: build_ci_image
+      optional: true
