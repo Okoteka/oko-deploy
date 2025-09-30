@@ -1,0 +1,25 @@
+build_ci_image:
+  stage: build
+  image: docker:20.10
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+    - docker build -t "$CI_REGISTRY_IMAGE:thick-client-$CI_COMMIT_SHA" ci-image
+    - docker push "$CI_REGISTRY_IMAGE:ci-image-$CI_COMMIT_SHA"
+  only:
+    changes:
+      - ci-image/**/*  
+      - justfile
+  when: manual
+
+deploy:
+  stage: deploy
+  image: "$CI_REGISTRY_IMAGE:thick-client-$CI_COMMIT_SHA"
+  needs: ["build_ci_image"]  
+  script:
+    - just deploy
+  when: manual
