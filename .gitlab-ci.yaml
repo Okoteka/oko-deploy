@@ -1,25 +1,33 @@
+stages:
+  - build
+  - deploy
+
 build_ci_image:
   stage: build
   image: docker:20.10
   services:
-    - docker:dind
+    - name: docker:20.10-dind
+      command: ["--host=tcp://0.0.0.0:2375", "--host=unix:///var/run/docker.sock"]
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://docker:2375
   script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
     - docker build -t "$CI_REGISTRY_IMAGE:thick-client-$CI_COMMIT_SHA" ci-image
     - docker push "$CI_REGISTRY_IMAGE:ci-image-$CI_COMMIT_SHA"
   only:
     changes:
-      - ci-image/**/*  
+      - ci-image/**/*
       - justfile
-  when: manual
+  privileged: true       # обязательно для DinD
 
 deploy:
   stage: deploy
-  image: "$CI_REGISTRY_IMAGE:thick-client-$CI_COMMIT_SHA"
-  needs: ["build_ci_image"]  
+  image: "$CI_REGISTRY_IMAGE:ci-image-$CI_COMMIT_SHA"
+  needs:
+    - job: build_ci_image
+      artifacts: false   # нам не нужны артефакты, только образ
   script:
     - just deploy
   when: manual
