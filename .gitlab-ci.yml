@@ -8,3 +8,4 @@ configure_server:
     - just configure-server
   tags:
     - docker
+  when: manual
