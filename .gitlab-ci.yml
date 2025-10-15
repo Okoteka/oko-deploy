@@ -6,3 +6,5 @@ configure_server:
   image: okoteka/oko-deploy-ci-image:latest
   script:
     - just configure-server
+  tags:
+    - docker
