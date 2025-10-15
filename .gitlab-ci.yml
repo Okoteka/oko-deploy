@@ -3,7 +3,7 @@ stages:
 
 configure_server:
   stage: configure
-  image: okoteka/oko-deploy-ci-image:latest
+  image: $CI_REGISTRY/okoteka/oko-deploy-ci-image:latest
   script:
     - just configure-server
   tags:
