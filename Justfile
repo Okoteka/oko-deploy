@@ -4,4 +4,4 @@ default:
 
 # configure server
 configure-server:
-    ansible-playbook -i ansible/inventory.yaml ansible/playbooks/configure-server.yml
+    ansible-playbook -i ansible/inventory.yaml ansible/playbooks/configure-server.yaml
