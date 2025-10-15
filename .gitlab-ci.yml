@@ -1,24 +1,8 @@
 stages:
-  - build_ci_image
-  - deploy
+  - configure
 
-build_ci_image:
-  stage: build
+configure_server:
+  stage: configure
+  image: okoteka/oko-deploy-ci-image:latest
   script:
-    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
-    - docker build -t "$CI_REGISTRY_IMAGE:ci-image-$CI_COMMIT_SHA" ci-image
-    - docker push "$CI_REGISTRY_IMAGE:ci-image-$CI_COMMIT_SHA"
-  only:
-    changes:
-      - ci-image/**/*
-      - justfile
-      - .gitlab-ci.yml
-
-deploy:
-  stage: deploy
-  script:
-    - docker run --rm "$CI_REGISTRY_IMAGE:ci-image-$CI_COMMIT_SHA" just deploy
-  when: manual
-  needs:
-    - job: build_ci_image
-      optional: true
+    - just configure-server
