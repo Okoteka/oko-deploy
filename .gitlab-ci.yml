@@ -1,6 +1,14 @@
 stages:
   - configure
 
+before_script:
+  - mkdir -p ~/.ssh
+  - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+  - chmod 600 ~/.ssh/id_ed25519
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+  - echo "$ANSIBLE_VAULT_PASSWORD" > ansible/.ansible_vault
+  - chmod 600 ansible/.ansible_vault
+
 configure_server:
   stage: configure
   image: $CI_REGISTRY/okoteka/oko-deploy-ci-image:latest

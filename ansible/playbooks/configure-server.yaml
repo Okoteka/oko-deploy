@@ -1,8 +1,12 @@
 ---
 - name: Configure server
-  hosts: localhost
+  hosts: production
   gather_facts: no
   tasks:
-    - name: Print hello world
+    - name: Show current hostname
+      command: hostname
+      register: result
+
+    - name: Print hostname to console
       debug:
-        msg: "hello world"
+        msg: "Connected to {{ result.stdout }} as {{ ansible_user }}"

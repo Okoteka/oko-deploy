@@ -7,7 +7,7 @@ default:
     just --list --unsorted
 
 # run command in local docker image
-local command:
+local *args:
     docker run --rm -it \
     -v ${MOUNT} -w /app \
     -e SSH_PRIVATE_KEY \
@@ -15,7 +15,12 @@ local command:
     bash -c 'mkdir -p ~/.ssh && \
     echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519 && \
     chmod 600 ~/.ssh/id_ed25519 && \
-    just {{command}}'
+    echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config && \
+    just {{args}}'
+
+# manipulate vault files
+vault-file command path:
+    ansible-vault {{command}} {{path}} --vault-password-file .ansible_vault
 
 # configure server
 configure-server:
