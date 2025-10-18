@@ -5,7 +5,7 @@ configure_server:
   stage: configure
   image: $CI_REGISTRY/okoteka/oko-deploy-ci-image:latest
   script:
-    - just configure-server
+    - just -f ansible/Justfile configure-server
   tags:
     - docker
   when: manual
