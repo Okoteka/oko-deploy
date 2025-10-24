@@ -2,11 +2,22 @@
 - name: Configure server
   hosts: production
   gather_facts: no
+  become: true
   tasks:
-    - name: Show current hostname
-      command: hostname
-      register: result
+    - name: Install Docker Engine
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: latest
+        update_cache: yes
 
-    - name: Print hostname to console
-      debug:
-        msg: "Connected to {{ result.stdout }} as {{ ansible_user }}"
+    - name: Create app directory
+      ansible.builtin.file:
+        path: "{{ app_directory }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'
