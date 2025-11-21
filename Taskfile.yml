@@ -1,0 +1,11 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task -l
+
+  configure-server:
+    desc: Configure remote production server
+    cmds:
+      - ansible-playbook ansible/playbooks/configure-server.yaml
