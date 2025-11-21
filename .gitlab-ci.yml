@@ -8,6 +8,8 @@ before_script:
   - echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
   - echo "$ANSIBLE_VAULT_PASSWORD" > ./ansible/.ansible_vault
   - chmod 600 ./ansible/.ansible_vault
+  - mkdir -p ~/.docker
+  - echo "$DOCKER_AUTH_CONFIG" > $HOME/.docker/config.json
 
 configure_server:
   stage: configure
