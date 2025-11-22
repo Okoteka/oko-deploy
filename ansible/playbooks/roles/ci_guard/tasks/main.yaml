@@ -1,8 +1,6 @@
 ---
 # This role prevents accidental or intentional execution of CI-only playbooks
-# from a local machine. It enforces two checks:
-#   1) The playbook must run under a trusted system user (e.g. gitlab-runner)
-#   2) GitLab CI-specific environment variables must be present
+# from a local machine.
 
 - name: "CI Guard: Fail if required environment variables are missing"
   ansible.builtin.fail:
