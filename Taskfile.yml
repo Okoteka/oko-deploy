@@ -5,7 +5,17 @@ tasks:
     cmds:
       - task -l
 
-  configure-server:
-    desc: Configure remote production server
+  vault:*:*:
+    desc: "Ansible vault wrapper. Example: task vault:edit:host_vars/prod/secrets.yml"
+    vars:
+      COMMAND: "{{ index .MATCH 0 }}"
+      PATH: "{{ index .MATCH 1 }}"
+    dir: ansible
     cmds:
-      - ansible-playbook ansible/playbooks/configure-server.yaml
+      - ansible-vault {{.COMMAND}} {{.PATH}}
+
+  configure-server:
+    desc: "Configure remote production server"
+    dir: ansible
+    cmds:
+      - ansible-playbook playbooks/configure-server.yaml
