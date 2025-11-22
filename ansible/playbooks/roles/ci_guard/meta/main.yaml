@@ -1,0 +1,7 @@
+---
+galaxy_info:
+  author: "Oko Infrastructure"
+  description: "Block playbook execution outside GitLab Runner"
+  min_ansible_version: "2.9"
+
+dependencies: []

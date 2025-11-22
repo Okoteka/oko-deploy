@@ -3,6 +3,8 @@
   hosts: production
   gather_facts: no
   become: true
+  roles:
+    - ci_guard
   tasks:
     - name: Install Docker Engine
       ansible.builtin.apt:
