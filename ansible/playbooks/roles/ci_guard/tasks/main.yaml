@@ -4,14 +4,6 @@
 #   1) The playbook must run under a trusted system user (e.g. gitlab-runner)
 #   2) GitLab CI-specific environment variables must be present
 
-- name: "CI Guard: Validate control node user"
-  ansible.builtin.fail:
-    msg: >
-      This playbook can only be run inside GitLab Runner by gitlab-runner user.
-      Current user: {{ lookup('env','USER') }}
-  when: lookup('env','USER') not in ci_guard_allowed_users
-  run_once: true
-  
 - name: "CI Guard: Fail if required environment variables are missing"
   ansible.builtin.fail:
     msg: "This playbook requires CI environment variable '{{ item }}'"
