@@ -20,6 +20,12 @@ tasks:
     cmds:
       - ansible-playbook playbooks/provision-server.yaml
 
+  ansible:deploy:
+    desc: "Deploy"
+    dir: ansible
+    cmds:
+      - ansible-playbook playbooks/deploy.yaml
+
   ansible:deploy-local:
     desc: "Deploy local"
     dir: ansible

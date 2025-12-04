@@ -10,11 +10,11 @@
 
 - name: "CI Guard: Validate CI_JOB_TOKEN via GitLab API"
   ansible.builtin.uri:
-    url: "{{ gitlab_url }}/api/v4/projects/{{ gitlab_project_id }}"
-    method: GET
+    url: "{{ gitlab_api_url }}/api/v4/user"
     headers:
-      JOB-TOKEN: "{{ ci_job_token }}"
+      JOB-TOKEN: "{{ lookup('env','CI_JOB_TOKEN') | mandatory('CI_JOB_TOKEN is missing — must run in GitLab CI') }}"
+    method: GET
+    return_content: yes
     status_code: 200
-    return_content: false
-  register: gitlab_check
-  failed_when: gitlab_check.status != 200
+  failed_when: result.status != 200
+  register: result
