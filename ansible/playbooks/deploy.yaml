@@ -1,0 +1,9 @@
+---
+- hosts: production
+  gather_facts: false
+  roles:
+    - role: guard_ci
+    - role: deploy
+      vars:
+        directory: "{{ app_dir }}"
+        user: "{{ ansible_user }}"
