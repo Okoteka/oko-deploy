@@ -18,7 +18,7 @@ provision:
   stage: infrastructure
   image: $CI_REGISTRY/okoteka/oko-deploy-ci-image:latest
   script:
-    - task ansible:configure-server
+    - task ansible:provision-server
   tags:
     - docker
   when: manual
@@ -30,4 +30,3 @@ deploy:
     - task ansible:deploy
   tags:
     - docker
-  when: manual

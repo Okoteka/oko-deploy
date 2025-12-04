@@ -14,11 +14,11 @@ tasks:
     cmds:
       - ansible-vault {{.COMMAND}} {{.PATH}}
 
-  ansible:configure-server:
-    desc: "Configure remote production server"
+  ansible:provision-server:
+    desc: "Provision remote production server"
     dir: ansible
     cmds:
-      - ansible-playbook playbooks/configure-server.yaml
+      - ansible-playbook playbooks/provision-server.yaml
 
   ansible:deploy-local:
     desc: "Deploy local"
