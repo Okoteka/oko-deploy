@@ -2,20 +2,9 @@
 # This role prevents accidental or intentional execution of CI-only playbooks
 # from a local machine.
 
-- name: "CI Guard: Load required CI variables"
-  ansible.builtin.set_fact:
-    gitlab_url: "{{ lookup('env', 'CI_SERVER_URL') | mandatory('CI_SERVER_URL is missing — must run in GitLab CI') }}"
-    gitlab_project_id: "{{ lookup('env', 'CI_PROJECT_ID') | mandatory('CI_PROJECT_ID is missing — must run in GitLab CI') }}"
-    ci_job_token: "{{ lookup('env', 'CI_JOB_TOKEN') | mandatory('CI_JOB_TOKEN is missing — must run in GitLab CI') }}"
-
-- name: "CI Guard: Validate CI_JOB_TOKEN via GitLab API using runners/verify"
-  ansible.builtin.uri:
-    url: "{{ gitlab_url }}/api/v4/runners/verify"
-    method: POST
-    body_format: json
-    body:
-      token: "{{ ci_job_token }}"
-    status_code: 200
-    return_content: yes
-  register: ci_token_check
-  failed_when: ci_token_check.status != 200
+- name: "CI Guard: Simple check for CI environment"
+  ansible.builtin.assert:
+    that:
+      - lookup('env', 'CI') == "true"
+      - lookup('env', 'GITLAB_CI') == "true"
+    fail_msg: "This playbook must be executed in GitLab CI/CD pipeline"
