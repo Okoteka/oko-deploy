@@ -10,7 +10,7 @@
 
 - name: "CI Guard: Validate CI_JOB_TOKEN via GitLab API using runners/verify"
   ansible.builtin.uri:
-    url: "{{ gitlab_api_url }}/api/v4/runners/verify"
+    url: "{{ gitlab_url }}/api/v4/runners/verify"
     method: POST
     body_format: json
     body:
