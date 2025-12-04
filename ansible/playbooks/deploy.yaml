@@ -2,7 +2,7 @@
 - hosts: production
   gather_facts: false
   roles:
-    - role: guard_ci
+    - role: ci_guard
     - role: deploy
       vars:
         directory: "{{ app_dir }}"
