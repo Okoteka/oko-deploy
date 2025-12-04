@@ -8,13 +8,14 @@
     gitlab_project_id: "{{ lookup('env', 'CI_PROJECT_ID') | mandatory('CI_PROJECT_ID is missing — must run in GitLab CI') }}"
     ci_job_token: "{{ lookup('env', 'CI_JOB_TOKEN') | mandatory('CI_JOB_TOKEN is missing — must run in GitLab CI') }}"
 
-- name: "CI Guard: Validate CI_JOB_TOKEN via GitLab API"
+- name: "CI Guard: Validate CI_JOB_TOKEN via GitLab API using runners/verify"
   ansible.builtin.uri:
-    url: "{{ gitlab_url }}/api/v4/user"
-    headers:
-      JOB-TOKEN: "{{ ci_job_token }}"
-    method: GET
-    return_content: yes
+    url: "{{ gitlab_api_url }}/api/v4/runners/verify"
+    method: POST
+    body_format: json
+    body:
+      token: "{{ ci_job_token }}"
     status_code: 200
-  failed_when: result.status != 200
-  register: result
+    return_content: yes
+  register: ci_token_check
+  failed_when: ci_token_check.status != 200
