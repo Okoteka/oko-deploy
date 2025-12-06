@@ -7,9 +7,21 @@
     group: "{{ user | mandatory }}"
     mode: "0600"
 
-- name: Deploy services
+- name: Upload compose files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ directory | mandatory }}/{{ item | basename }}"
+    owner: "{{ user | mandatory }}"
+    group: "{{ user | mandatory }}"
+    mode: '0644'
+  loop: "{{ compose_files | default([]) }}"
+
+- name: Apply Docker Compose configurations
   community.docker.docker_compose_v2:
     project_src: "{{ directory | mandatory }}"
-    files:
-      - docker-compose.yaml
+    files: >-
+      {{
+        compose_files if compose_files is defined
+        else ['docker-compose.yaml']
+      }}
     state: present
