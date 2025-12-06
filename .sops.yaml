@@ -1,0 +1,7 @@
+creation_rules:
+  - encrypted_regex: '.*'
+    age:
+      # gitlab ci
+      - age1lru73g2m2y9zydfsdlfgvda7xw8qnhwepaydnheq3l6xal4pvqfslr5vht
+      # erdyakov
+      - age1m4v0egh4e94qcns0se3088zdshvp4xurz3gs4pxqk3p60clm85eqgn3j2n
