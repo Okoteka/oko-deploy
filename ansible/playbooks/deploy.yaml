@@ -8,5 +8,4 @@
         directory: "{{ app_dir }}"
         user: "{{ ansible_user }}"
         compose_files:
-          - src: "{{ playbook_dir }}/../../compose/docker-compose.yaml"
-            dest: "docker-compose.yaml"
+          - "{{ playbook_dir }}/../../compose/docker-compose.yaml"
