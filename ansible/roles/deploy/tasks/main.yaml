@@ -21,7 +21,8 @@
     project_src: "{{ directory | mandatory }}"
     files: >-
       {{
-        compose_files if compose_files is defined
+        compose_files | map('basename') | list
+        if compose_files is defined
         else ['docker-compose.yaml']
       }}
     state: present
