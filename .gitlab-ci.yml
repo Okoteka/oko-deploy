@@ -26,7 +26,7 @@ provision:
 
 deploy:
   stage: application
-  image: $CI_REGISTRY/okoteka/oko-deploy-ci-image-internal:latest
+  image: $CI_REGISTRY/okoteka/oko-deploy-ci-image:latest
   script:
     - task ansible:deploy
   tags:

@@ -1,5 +1,5 @@
 ---
-- hosts: production
+- hosts: Deploy production
   gather_facts: false
   roles:
     - role: ci_guard
