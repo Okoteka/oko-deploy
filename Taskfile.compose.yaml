@@ -1,0 +1,20 @@
+version: '3'
+
+tasks:
+  up:
+    desc: "Start Docker Compose stack"
+    dir: compose
+    cmds:
+      - docker compose up -d --build
+
+  down:
+    desc: "Stop Docker Compose stack"
+    dir: compose
+    cmds:
+      - docker compose down
+
+  ps:
+    desc: "Show Docker Compose services status"
+    dir: compose
+    cmds:
+      - docker compose ps

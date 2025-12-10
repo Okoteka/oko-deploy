@@ -1,0 +1,20 @@
+version: '3'
+
+tasks:
+  provision-server:
+    desc: "Provision remote production server"
+    dir: ansible
+    cmds:
+      - ansible-playbook playbooks/provision-server.yaml
+
+  deploy:
+    desc: "Deploy"
+    dir: ansible
+    cmds:
+      - ansible-playbook playbooks/deploy.yaml
+
+  deploy-local:
+    desc: "Deploy local"
+    dir: ansible
+    cmds:
+      - ansible-playbook playbooks/deploy-local.yaml

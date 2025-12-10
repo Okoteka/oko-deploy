@@ -21,7 +21,7 @@ provision:
   script:
     - task ansible:provision-server
   tags:
-    - docker
+    - runner-docker
   when: manual
 
 deploy:
@@ -30,4 +30,4 @@ deploy:
   script:
     - task ansible:deploy
   tags:
-    - docker
+    - runner-docker

@@ -1,0 +1,30 @@
+version: '3'
+
+tasks:
+  edit:*:
+    desc: "Edit SOPS-encrypted file (auto-decrypt/re-encrypt)"
+    vars:
+      PATH: "{{ index .MATCH 0 }}"
+    cmds:
+      - sops {{.PATH}}
+
+  view:*:
+    desc: "View SOPS-encrypted file"
+    vars:
+      PATH: "{{ index .MATCH 0 }}"
+    cmds:
+      - sops -d {{.PATH}}
+
+  encrypt:*:
+    desc: "Encrypt file in-place with SOPS"
+    vars:
+      PATH: "{{ index .MATCH 0 }}"
+    cmds:
+      - sops --encrypt --in-place "{{.PATH}}"
+
+  decrypt:*:
+    desc: "Decrypt file in-place with SOPS"
+    vars:
+      PATH: "{{ index .MATCH 0 }}"
+    cmds:
+      - sops --decrypt --in-place "{{.PATH}}"

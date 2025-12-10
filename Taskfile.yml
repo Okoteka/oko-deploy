@@ -2,71 +2,12 @@ version: '3'
 
 dotenv: ['.env']
 
+includes:
+  ansible: ./Taskfile.ansible.yaml
+  compose: ./Taskfile.compose.yaml
+  sops: ./Taskfile.sops.yaml
+
 tasks:
   default:
     cmds:
       - task -l
-
-  ansible:provision-server:
-    desc: "Provision remote production server"
-    dir: ansible
-    cmds:
-      - ansible-playbook playbooks/provision-server.yaml
-
-  ansible:deploy:
-    desc: "Deploy"
-    dir: ansible
-    cmds:
-      - ansible-playbook playbooks/deploy.yaml
-
-  ansible:deploy-local:
-    desc: "Deploy local"
-    dir: ansible
-    cmds:
-      - ansible-playbook playbooks/deploy-local.yaml
-
-  compose:up:
-    desc: "Start Docker Compose stack"
-    dir: compose
-    cmds:
-      - docker compose up -d --build
-
-  compose:down:
-    desc: "Stop Docker Compose stack"
-    dir: compose
-    cmds:
-      - docker compose down
-
-  compose:ps:
-    desc: "Show Docker Compose services status"
-    dir: compose
-    cmds:
-      - docker compose ps
-
-  sops:edit:*:
-    desc: "Edit SOPS-encrypted file (auto-decrypt/re-encrypt)"
-    vars:
-      PATH: "{{ index .MATCH 0 }}"
-    cmds:
-      - sops {{.PATH}}
-
-  sops:view:*:
-    desc: "View SOPS-encrypted file (auto-decrypt/re-encrypt)"
-    vars:
-      PATH: "{{ index .MATCH 0 }}"
-    cmds:
-      - sops -d {{.PATH}}
-
-  sops:encrypt:*:
-    desc: "Encrypt file in-place with SOPS"
-    vars:
-      PATH: "{{ index .MATCH 0 }}"
-    cmds:
-      - sops --encrypt --in-place "{{.PATH}}"
-
-  sops:decrypt:*:
-    desc: "Decrypt file in-place with SOPS"
-    vars:
-      PATH: "{{ index .MATCH 0 }}"
-    cmds:
-      - sops --decrypt --in-place "{{.PATH}}"
