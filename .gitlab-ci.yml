@@ -28,6 +28,9 @@ deploy:
   stage: application
   image: $CI_REGISTRY/okoteka/oko-deploy-ci-image:latest
   script:
+    - ls -l /usr/local/share/ca-certificates/
+    - cat /usr/local/share/ca-certificates/nas_loc.crt
+    - openssl s_client -connect g.nas.loc:4567 -CAfile /etc/ssl/certs/ca-certificates.crt -servername g.nas.loc
     - task ansible:deploy
   tags:
     - runner-docker
