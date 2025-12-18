@@ -17,7 +17,7 @@ before_script:
 
 provision:
   stage: infrastructure
-  image: $CI_REGISTRY/okoteka/oko-deploy-ci-image:latest
+  image: $CI_REGISTRY/okoteka/oko-deploy-ci-image/ansible:latest
   script:
     - task ansible:provision-server
   tags:
@@ -26,7 +26,7 @@ provision:
 
 deploy:
   stage: application
-  image: $CI_REGISTRY/okoteka/oko-deploy-ci-image:latest
+  image: $CI_REGISTRY/okoteka/oko-deploy-ci-image/ansible:latest
   script:
     - task ansible:deploy
   tags:
