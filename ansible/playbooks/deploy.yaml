@@ -5,8 +5,5 @@
     - role: ci_guard
     - role: deploy
       vars:
-        directory: "{{ app_dir }}"
+        directory_dest: "{{ app_dir }}"
         user: "{{ ansible_user }}"
-        compose_files:
-          - "{{ playbook_dir }}/../../compose/docker-compose.yaml"
-          - "{{ playbook_dir }}/../../compose/docker-compose.o11y.yaml"

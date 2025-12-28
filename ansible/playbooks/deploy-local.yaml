@@ -5,8 +5,5 @@
   roles:
     - role: deploy
       vars:
-        directory: "{{ playbook_dir }}/../../compose/"
+        directory_dest: "{{ playbook_dir }}/../../build/"
         user: "{{ ansible_env.USER | default(lookup('env','USER')) }}"
-        compose_files:
-          - "{{ playbook_dir }}/../../compose/docker-compose.yaml"
-          - "{{ playbook_dir }}/../../compose/docker-compose.o11y.yaml"

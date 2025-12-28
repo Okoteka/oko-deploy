@@ -1,28 +1,45 @@
 ---
+- name: Ensure directory_dest exists
+  ansible.builtin.file:
+    path: "{{ directory_dest | mandatory }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0755'
+
 - name: Render DB env file
   template:
     src: .env.j2
-    dest: "{{ directory | mandatory }}/.env"
+    dest: "{{ directory_dest | mandatory }}/.env"
     owner: "{{ user | mandatory }}"
     group: "{{ user | mandatory }}"
     mode: "0600"
 
-- name: Upload compose files
-  copy:
-    src: "{{ item }}"
-    dest: "{{ directory | mandatory }}/{{ item | basename }}"
+- name: Upload compose directory_dest
+  synchronize:
+    src:  "{{ playbook_dir }}/../../compose/"
+    dest: "{{ directory_dest | mandatory }}"
+    recursive: yes
+    delete: no
+    rsync_opts:
+      - "--chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r"
+
+- name: Set ownership on compose directory_dest
+  file:
+    path: "{{ directory_dest | mandatory }}"
     owner: "{{ user | mandatory }}"
     group: "{{ user | mandatory }}"
-    mode: '0644'
-  loop: "{{ compose_files | default([]) }}"
+    recurse: yes
+
+- name: Find docker-compose yaml files
+  find:
+    paths: "{{ directory_dest }}"
+    patterns: "docker-compose*.yaml"
+    file_type: file
+  register: compose_files_found
 
 - name: Apply Docker Compose configurations
   community.docker.docker_compose_v2:
-    project_src: "{{ directory | mandatory }}"
-    files: >-
-      {{
-        compose_files | map('basename') | list
-        if compose_files is defined
-        else ['docker-compose.yaml']
-      }}
+    project_src: "{{ directory_dest }}"
+    files: "{{ compose_files_found.files | map(attribute='path') | list }}"
     state: present
