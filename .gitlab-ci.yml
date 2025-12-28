@@ -7,8 +7,6 @@ before_script:
   - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
   - chmod 600 ~/.ssh/id_ed25519
   - echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
-  - mkdir -p ~/.docker
-  - echo "$DOCKER_AUTH_CONFIG" > $HOME/.docker/config.json
   - export ANSIBLE_CONFIG="$CI_PROJECT_DIR/ansible/ansible.cfg"
   - mkdir -p /tmp/sops
   - echo "$SOPS_CI_PRIVATE_KEY" > /tmp/sops/key.txt.age
