@@ -9,3 +9,4 @@
         user: "{{ ansible_user }}"
         compose_files:
           - "{{ playbook_dir }}/../../compose/docker-compose.yaml"
+          - "{{ playbook_dir }}/../../compose/docker-compose.o11y.yaml"

@@ -7,3 +7,6 @@
       vars:
         directory: "{{ playbook_dir }}/../../compose/"
         user: "{{ ansible_env.USER | default(lookup('env','USER')) }}"
+        compose_files:
+          - "{{ playbook_dir }}/../../compose/docker-compose.yaml"
+          - "{{ playbook_dir }}/../../compose/docker-compose.o11y.yaml"
