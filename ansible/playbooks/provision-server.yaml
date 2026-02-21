@@ -26,7 +26,7 @@
 
     - name: Add Docker daemon.json from template
       ansible.builtin.copy:
-        src: daemon.json.sops
+        src: daemon.sops.json
         dest: /etc/docker/daemon.json
         owner: root
         group: root
