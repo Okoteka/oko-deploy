@@ -24,14 +24,15 @@
         group: "{{ ansible_user }}"
         mode: '0755'
 
-    - name: Add Docker daemon.json from template
-      ansible.builtin.template:
-        src: daemon.sops.j2
+    - name: Copy and decrypt Docker daemon.json
+      ansible.builtin.copy:
+        content: "{{ lookup('community.sops.sops', 'daemon.sops.json') }}"
         dest: /etc/docker/daemon.json
         owner: root
         group: root
         mode: '0644'
-      notify: Restart Docker
+        notify: Restart Docker
+        no_log: true
 
   handlers:
     - name: Restart Docker
