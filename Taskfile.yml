@@ -5,6 +5,7 @@ dotenv: ['.env']
 includes:
   ansible: ./Taskfile.ansible.yaml
   sops: ./Taskfile.sops.yaml
+  build: ./Taskfile.build.yaml
 
 tasks:
   default:

@@ -1,0 +1,8 @@
+version: '3'
+
+tasks:
+  ps:
+    desc: "Show docker containers in build directory"
+    dir: build
+    cmds:
+      - docker ps
