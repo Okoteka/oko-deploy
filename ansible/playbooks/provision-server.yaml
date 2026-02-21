@@ -25,7 +25,7 @@
         mode: '0755'
 
     - name: Add Docker daemon.json from template
-      ansible.builtin.copy:
+      community.sops.sops:
         src: daemon.sops.json
         dest: /etc/docker/daemon.json
         owner: root
