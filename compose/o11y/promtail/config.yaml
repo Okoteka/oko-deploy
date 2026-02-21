@@ -25,21 +25,24 @@ scrape_configs:
             log: log
             stream: stream
             time: time
-            attrs: attrs
+            tag: attrs.tag
+            compose_project: attrs."com.docker.compose.project"
+            compose_service: attrs."com.docker.compose.service"
 
       - regex:
           source: filename
           expression: '/var/lib/docker/containers/(?P<container_id>[a-f0-9]{12})'
 
-      - json:
-          source: attrs
-          expressions:
-            container_name: tag
-
       - labels:
           container_id:
-          container_name:
+          tag:
+          compose_project:
+          compose_service:
           stream:
+
+      - match:
+          selector: '{compose_project!="${COMPOSE_PROJECT_NAME}"}'
+          action: drop
 
       - output:
           source: log

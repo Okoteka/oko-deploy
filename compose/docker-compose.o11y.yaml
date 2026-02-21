@@ -1,7 +1,6 @@
 services:
   loki:
     image: grafana/loki:2.9.2
-    container_name: o11y-loki
     command:
       - -config.file=/etc/loki/config.yaml
       - -config.expand-env=true
@@ -20,8 +19,9 @@ services:
 
   promtail:
     image: grafana/promtail:2.9.2
-    container_name: o11y-promtail
     command: -config.file=/etc/promtail/config.yaml -config.expand-env=true
+    environment:
+      - COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}
     volumes:
       - ./o11y/promtail/config.yaml:/etc/promtail/config.yaml:ro,Z
       - /var/lib/docker/containers:/var/lib/docker/containers:ro,Z
@@ -33,7 +33,6 @@ services:
 
   grafana:
     image: grafana/grafana:10.4.2
-    container_name: o11y-grafana
     ports:
       - "${O11Y_GRAFANA_PORT}:${O11Y_GRAFANA_PORT_HOST}"
     volumes:
