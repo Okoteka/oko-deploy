@@ -4,7 +4,6 @@ dotenv: ['.env']
 
 includes:
   ansible: ./Taskfile.ansible.yaml
-  compose: ./Taskfile.compose.yaml
   sops: ./Taskfile.sops.yaml
 
 tasks:
