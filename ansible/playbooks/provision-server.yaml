@@ -3,8 +3,6 @@
   hosts: production
   gather_facts: no
   become: true
-  roles:
-    - ci_guard
   tasks:
     - name: Install Docker Engine
       ansible.builtin.apt:
@@ -25,7 +23,7 @@
         mode: '0755'
 
     - name: Add Docker daemon.json from template
-      community.sops.sops:
+      community.sops.sops_encrypt:
         src: daemon.sops.json
         dest: /etc/docker/daemon.json
         owner: root
