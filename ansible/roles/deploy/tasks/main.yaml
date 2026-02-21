@@ -38,8 +38,32 @@
     file_type: file
   register: compose_files_found
 
+- name: Wipe everything (containers + volumes)
+  community.docker.docker_compose_v2:
+    project_src: "{{ directory_dest }}"
+    files: "{{ compose_files_found.files | map(attribute='path') | list }}"
+    state: absent
+    remove_volumes: yes
+    remove_orphans: yes
+  when: wipe_volumes | default(false) | bool
+
 - name: Apply Docker Compose configurations
   community.docker.docker_compose_v2:
     project_src: "{{ directory_dest }}"
     files: "{{ compose_files_found.files | map(attribute='path') | list }}"
     state: present
+    recreate: auto
+    pull: always
+    remove_orphans: yes
+  when: compose_up | default(false) | bool
+
+- name: Restart all services
+  community.docker.docker_compose_v2:
+    project_src: "{{ directory_dest }}"
+    files: "{{ compose_files_found.files | map(attribute='path') | list }}"
+    state: restarted
+    pull: always
+    remove_orphans: yes
+  when: restart_services | default(false) | bool
+
+

@@ -29,4 +29,4 @@ tasks:
     desc: "Wipe everything (containers + volumes)"
     dir: ansible
     cmds:
-      - ansible-playbook playbooks/deploy-local.yaml -e "wipe_volumes=true, compose_up=true"
+      - ansible-playbook playbooks/deploy-local.yaml -e "wipe_volumes=true compose_up=true"
