@@ -31,7 +31,7 @@ deploy:
     - runner-docker
 
 restart:
-  stage: infrastructure
+  stage: application
   image: $CI_REGISTRY/okoteka/internal-images/ansible:latest
   script:
     - task ansible:restart
