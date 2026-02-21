@@ -13,20 +13,8 @@ tasks:
     cmds:
       - ansible-playbook playbooks/deploy.yaml -e "compose_up=true"
 
-  deploy-local:
-    desc: "Deploy local"
+  restart:
+    desc: "Restart compose"
     dir: ansible
     cmds:
-      - ansible-playbook playbooks/deploy-local.yaml -e "compose_up=true"
-
-  restart-local:
-    desc: "Restart local compose"
-    dir: ansible
-    cmds:
-      - ansible-playbook playbooks/deploy-local.yaml -e "restart_services=true"
-
-  wipe-local:
-    desc: "Wipe everything (containers + volumes)"
-    dir: ansible
-    cmds:
-      - ansible-playbook playbooks/deploy-local.yaml -e "wipe_volumes=true compose_up=true"
+      - ansible-playbook playbooks/deploy.yaml -e "restart_services=true"

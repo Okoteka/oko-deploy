@@ -29,3 +29,12 @@ deploy:
     - task ansible:deploy
   tags:
     - runner-docker
+
+provision:
+  stage: infrastructure
+  image: $CI_REGISTRY/okoteka/internal-images/ansible:latest
+  script:
+    - task ansible:restart
+  tags:
+    - runner-docker
+  when: manual

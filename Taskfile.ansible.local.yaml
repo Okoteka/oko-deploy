@@ -1,0 +1,20 @@
+version: '3'
+
+tasks:
+  deploy:
+    desc: "Deploy local"
+    dir: ansible
+    cmds:
+      - ansible-playbook playbooks/deploy-local.yaml -e "compose_up=true"
+
+  restart:
+    desc: "Restart local compose"
+    dir: ansible
+    cmds:
+      - ansible-playbook playbooks/deploy-local.yaml -e "restart_services=true"
+
+  wipe:
+    desc: "Wipe local everything (containers + volumes)"
+    dir: ansible
+    cmds:
+      - ansible-playbook playbooks/deploy-local.yaml -e "wipe_volumes=true compose_up=true"

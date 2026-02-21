@@ -4,10 +4,30 @@ dotenv: ['.env']
 
 includes:
   ansible: ./Taskfile.ansible.yaml
+  ansible:local: ./Taskfile.ansible.local.yaml
   sops: ./Taskfile.sops.yaml
   build: ./Taskfile.build.yaml
-
 tasks:
   default:
+    silent: true
     cmds:
-      - task -l
+      - |
+        echo ""
+        echo -e "\033[1;36mOKO DEPLOY — Available Tasks\033[0m"
+        echo ""
+
+        echo -e "\033[1;33mANSIBLE (remote)\033[0m"
+        task -l | grep 'ansible:' | grep -v 'ansible:local:' || true
+        echo ""
+
+        echo -e "\033[1;33mANSIBLE (local)\033[0m"
+        task -l | grep 'ansible:local:' || true
+        echo ""
+
+        echo -e "\033[1;33mBUILD\033[0m"
+        task -l | grep 'build:' || true
+        echo ""
+
+        echo -e "\033[1;33mSOPS\033[0m"
+        task -l | grep 'sops:' || true
+        echo ""
