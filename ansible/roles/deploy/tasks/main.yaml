@@ -3,9 +3,31 @@
   ansible.builtin.file:
     path: "{{ directory_dest | mandatory }}"
     state: directory
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    owner: "{{ user | mandatory }}"
+    group: "{{ user | mandatory }}"
     mode: '0755'
+
+- name: Ensure app_env is defined
+  assert:
+    that:
+      - app_env is defined
+      - app_env is mapping
+    fail_msg: "app_env must be defined as a dictionary"
+
+- name: Append DB_URL variable to app_env
+  set_fact:
+    app_env: >-
+      {{
+        app_env | combine({
+          'DB_URL':
+            '"host=' ~ app_env.DB_HOST ~
+            ' user=' ~ app_env.DB_USER ~
+            ' password=' ~ app_env.DB_PASSWORD ~
+            ' dbname=' ~ app_env.DB_NAME ~
+            ' port=' ~ app_env.DB_PORT ~
+            ' sslmode=' ~ app_env.DB_SSL ~ '"'
+        })
+      }}
 
 - name: Render DB env file
   template:
@@ -51,6 +73,7 @@
   community.docker.docker_compose_v2:
     project_src: "{{ directory_dest }}"
     files: "{{ compose_files_found.files | map(attribute='path') | list }}"
+    profiles: "{{ [ app_env.APP_ENV | mandatory('app_env.APP_ENV is not defined!') ] }}"
     state: present
     recreate: auto
     pull: always
@@ -61,9 +84,8 @@
   community.docker.docker_compose_v2:
     project_src: "{{ directory_dest }}"
     files: "{{ compose_files_found.files | map(attribute='path') | list }}"
+    profiles: "{{ [ app_env.APP_ENV | mandatory('app_env.APP_ENV is not defined!') ] }}"
     state: restarted
     pull: always
     remove_orphans: yes
   when: restart_services | default(false) | bool
-
-

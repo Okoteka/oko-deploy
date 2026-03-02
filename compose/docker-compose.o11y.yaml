@@ -1,3 +1,6 @@
+x-app-vars: &app-vars
+  APP_ENV: ${APP_ENV}
+
 services:
   loki:
     image: grafana/loki:2.9.2
@@ -9,6 +12,8 @@ services:
       - loki-data:/loki
     ports:
       - "${O11Y_LOKI_PORT}:${O11Y_LOKI_PORT_HOST}"
+    environment:
+      <<: *app-vars
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3100/ready"]
       interval: 10s
@@ -21,7 +26,8 @@ services:
     image: grafana/promtail:2.9.2
     command: -config.file=/etc/promtail/config.yaml -config.expand-env=true
     environment:
-      - COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}
+      <<: *app-vars
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
     volumes:
       - ./o11y/promtail/config.yaml:/etc/promtail/config.yaml:ro,Z
       - /var/lib/docker/containers:/var/lib/docker/containers:ro,Z
@@ -33,6 +39,8 @@ services:
 
   grafana:
     image: grafana/grafana:10.4.2
+    environment:
+      <<: *app-vars
     ports:
       - "${O11Y_GRAFANA_PORT}:${O11Y_GRAFANA_PORT_HOST}"
     volumes:
